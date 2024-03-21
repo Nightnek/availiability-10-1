@@ -10,7 +10,51 @@
 
 ## Задание 2
 
+скрипты для настройки дома
 
+global_defs {
+        enable_script_security
+}
+
+vrrp_script myhealth {
+        script "/usr/local/bin/healthch.sh"
+        interval 3
+        user nobody
+        }
+
+vrrp_instance VI_1 {
+        state MASTER
+        interface enp0s3
+        virtual_router_id 15
+        priority 255
+        advert_int 1
+
+        virtual_ipaddress {
+             10.88.41.179/24
+        }
+        track_script {
+        myhealth
+        }
+
+
+vrrp_instance VI_1 {
+        state BACKUP
+        interface enp0s3
+        virtual_router_id 15
+        priority 205
+        advert_int 1
+
+        virtual_ipaddress {
+             10.88.41.179/24
+        }
+
+}
+
+
+
+#!/bin/bash
+
+/bin/nc -z -w 2 127.0.0.1 80 && [ -f /var/www/html/index.nginx-debian.html ]
 
 
 ---
