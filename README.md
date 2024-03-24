@@ -10,8 +10,12 @@
 
 ## Задание 2
 
-скрипты для настройки дома
+ 
+скрипты для настройки Keepalived:
 
+Main:
+
+````
 global_defs {
         enable_script_security
 }
@@ -30,13 +34,16 @@ vrrp_instance VI_1 {
         advert_int 1
 
         virtual_ipaddress {
-             10.88.41.179/24
+             192.168.0.100/24
         }
         track_script {
         myhealth
         }
+````
 
+Backup:
 
+````
 vrrp_instance VI_1 {
         state BACKUP
         interface enp0s3
@@ -45,16 +52,22 @@ vrrp_instance VI_1 {
         advert_int 1
 
         virtual_ipaddress {
-             10.88.41.179/24
+             192.168.0.100/24
         }
 
 }
+````
 
+Script:
 
-
+````
 #!/bin/bash
 
 /bin/nc -z -w 2 127.0.0.1 80 && [ -f /var/www/html/index.nginx-debian.html ]
+````
+
+![image](https://github.com/Nightnek/availiability-10-1/assets/127677631/c83b708f-2327-457b-8b78-3cdda6ef76e9)
+![image](https://github.com/Nightnek/availiability-10-1/assets/127677631/f1596a70-81bf-4c97-8bb4-ac8f464bacf2)
 
 
 ---
